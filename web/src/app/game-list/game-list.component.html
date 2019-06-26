@@ -1,0 +1,32 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Previous Games</h3>
+  </div>
+  <div class="card-body">
+    <div class="list-group" *ngIf="games">
+      <div class="list-group-item list-group-item-action text-center" *ngFor="let game of games.data; let i = index">
+        <div class="w-100 justify-content-between">
+          <h4 class="mb-1">{{game.player_1}} vs {{game.player_2}}</h4>
+        </div>
+        <h5 class="mb-1 mt-2">
+          <i class="fa fa-trophy text-warning"></i><span class="text-primary ml-1">WINNER {{game.winner}}!!</span>
+        </h5>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <nav aria-label="Page navigation example" *ngIf="games && games.total > 5">
+      <ul class="pagination m-0">
+        <li class="page-item" [ngClass]="{disabled: !games.prev_page_url}">
+          <a class="page-link" (click)="changePage(games.prev_page_url)" href="#">Previous</a>
+        </li>
+        <li class="page-item" *ngFor="let page of pages" [ngClass]="{active: page.active}">
+          <a class="page-link" (click)="changePage(page.url)" href="#">{{page.page}}</a>
+        </li>
+        <li class="page-item" [ngClass]="{disabled: !games.next_page_url}">
+          <a class="page-link" (click)="changePage(games.next_page_url)" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

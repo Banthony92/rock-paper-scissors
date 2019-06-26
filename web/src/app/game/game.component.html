@@ -1,0 +1,73 @@
+<div class="row mb-5" *ngIf="turn < 3">
+  <div class="col-12 col-md-6">
+    <h1 class="display-3 mb-3">Round {{round}}</h1>
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 text-center">
+            <h1 *ngIf="turn === 1" class="text-primary">{{playerOne}}</h1>
+            <h1 *ngIf="turn === 2" class="text-danger">{{playerTwo}}</h1>
+          </div>
+        </div>
+        <form [formGroup]="roundForm" (ngSubmit)="nextRound(roundForm.value)">
+          <div class="form-group row mt-3">
+            <label class="col-md-3 col-form-label">Select Move: </label>
+            <div class="col-md-9">
+              <select class="form-control" formControlName="move">
+                <option *ngFor="let option of conf" [ngValue]="option">{{option.move}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 text-center">
+              <button class="btn btn-outline-success pl-5 pr-5" [disabled]="roundForm.invalid">Ok</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-4 offset-md-2 border-left">
+    <h1>Score</h1>
+    <table class="table table-striped table-bordered">
+      <thead>
+      <tr>
+        <td>Round</td>
+        <td>Winner</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let result of results; let i = index">
+        <td>{{i + 1}}</td>
+        <td
+          [ngClass]="{'text-primary': (playerOne === result.winner), 'text-danger': (playerTwo === result.winner), 'text-warning': ('DRAW' === result.winner)}">{{result.winner}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row mb-5" *ngIf="turn === 3">
+  <div class="col-12 text-center mb-4">
+    <h1 class="display-1 mb-5">We have a WINNER!!</h1>
+    <h1 class="display-3 mb-5">
+      <span
+        [ngClass]="{'text-primary': (playerOne === winner), 'text-danger': (playerTwo === winner)}">{{winner}}</span>
+      is the new EMPEROR!</h1>
+  </div>
+  <div class="col-12 col-sm-4 offset-0">
+    <button class="btn btn-outline-success btn-block" (click)="playAgain()"><i
+      class="fa fa-gamepad"></i> Play Again
+    </button>
+  </div>
+  <div class="col-12 col-sm-4 offset-0">
+    <button type="button" class="btn btn-outline-info btn-block" data-toggle="modal"
+            data-target="#rulesModal" (click)="rulesConfig.openConfig()"><i class="fa fa-cog"></i>
+      Changes Rules
+    </button>
+  </div>
+  <div class="col-12 col-sm-4 offset-0">
+    <a class="btn btn-outline-secondary btn-block" routerLink="/"><i class="fa fa-door-open"></i> Exit
+    </a>
+  </div>
+  <app-rules-configuration></app-rules-configuration>
+</div>

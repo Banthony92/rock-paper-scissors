@@ -1,0 +1,80 @@
+<div class="modal fade" id="rulesModal" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Rules Configuration</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <h5>Configuration</h5>
+            <div class="form-group mt-3" *ngFor="let move of newConf; let i = index">
+              <button class="btn btn-outline-danger btn-sm -pull-right mr-2"
+                      *ngIf="!['Rock', 'Paper', 'Scissors'].includes(move.move)"
+                      (click)="removeMove(i)">
+                <i class="fa fa-times"></i>
+              </button>
+              <label>{{move.move}}</label>
+              <select [(ngModel)]="newConf[i]['kills']" class="form-control">
+                <ng-container *ngFor="let option of newConf">
+                  <option *ngIf="newConf[i].move !== option.move" [ngValue]="option.move">{{option.move}}</option>
+                </ng-container>
+              </select>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 border-left ml-0">
+            <h5>Add new move</h5>
+            <form [formGroup]="moveForm" (ngSubmit)="addMove(moveForm.value)">
+              <div class="form-group row mt-3">
+                <label class="col-md-2 col-form-label">Move</label>
+                <div class="col-md-10">
+                  <input type="text" class="form-control" formControlName="move">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-2 col-form-label">Kill</label>
+                <div class="col-md-10">
+                  <select class="form-control" formControlName="kills">
+                    <option *ngFor="let option of newConf" [value]="option.move">{{option.move}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-12">
+                  <button class="btn btn-block btn-outline-success" [disabled]="moveForm.invalid">Add Move</button>
+                </div>
+                <div class="col-12 mt-2">
+                  <div *ngIf="move.invalid && (move.dirty || move.touched)"
+                       class="alert alert-danger">
+                    <div *ngIf="move.errors.required">
+                      Move is required.
+                    </div>
+                    <div *ngIf="move.errors.minlength">
+                      Move must be at least 3 characters long.
+                    </div>
+                    <div *ngIf="move.errors.validMove">
+                      Move already exist
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-outline-info" (click)="restoreRules()">Restore</button>
+        <button type="button" class="btn btn-outline-primary" data-dismiss="modal" (click)="saveChanges()">Save
+          changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
